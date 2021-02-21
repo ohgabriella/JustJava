@@ -29,20 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         Log.v("MainActivity", "Name: " + name);
 
-        CheckBox checkBoxCream = (CheckBox) findViewById(R.id.cream);
+        CheckBox checkBoxCream = (CheckBox) findViewById(R.id.addWhippedCream);
         boolean hasWhippedCream = checkBoxCream.isChecked();
 
-        CheckBox checkBoxChocolate = (CheckBox) findViewById(R.id.chocolate);
+        CheckBox checkBoxChocolate = (CheckBox) findViewById(R.id.addChocolate);
         boolean hasChocolate = checkBoxChocolate.isChecked();
 
         int totalPrice = calculatePrice(hasWhippedCream, hasChocolate);
 
         String orderMessage = orderSumary(name, totalPrice, hasWhippedCream, hasChocolate);
 
-        //ao incluir essa parte, a ideia é e apagar os codigos desnecessarios
+        //ao incluir essa parte, a ideia é apagar os codigos desnecessarios para o pedido ser mostrado no email
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + name);
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.order_summary_email_subject) + name);
         intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String orderSumary(String name, int totalPrice, boolean hasWhippedCream, boolean hasChocolate) {
         return "Name: " + name + "\n"
-                + "Quantity: " + numberOfCoffes + "\n"
-                + "Total: $" + totalPrice + "\n"
-                + "Has whipped cream: " + hasWhippedCream + "\n"
-                + "Has chocolate: " + hasChocolate + "\n"
+                + getString(R.string.order_summary_quantity) + numberOfCoffes + "\n"
+                + getString(R.string.order_summary_price) + totalPrice + "\n"
+                + getString(R.string.order_summary_whipped_cream) + hasWhippedCream + "\n"
+                + getString(R.string.order_summary_chocolate) + hasChocolate + "\n"
                 + getString(R.string.thank_you);
     }
 
