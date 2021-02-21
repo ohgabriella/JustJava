@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
-    int numberOfCoffes = 0;
+    int numberOfCoffes = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
         int totalPrice = calculatePrice(hasWhippedCream, hasChocolate);
 
-        orderSumary(name, totalPrice, hasWhippedCream, hasChocolate);
+        String orderMessage = orderSumary(name, totalPrice, hasWhippedCream, hasChocolate);
+        displaySumary(orderMessage);
     }
 
-    public void orderSumary(String name, int totalPrice, boolean hasWhippedCream, boolean hasChocolate) {
-        displaySumary(""
-                + "Name: " + name + "\n"
+    public String orderSumary(String name, int totalPrice, boolean hasWhippedCream, boolean hasChocolate) {
+                return "Name: " + name + "\n"
                 + "Quantity: " + numberOfCoffes + "\n"
                 + "Total: $" + totalPrice + "\n"
                 + "Has whipped cream: " + hasWhippedCream + "\n"
                 + "Has chocolate: " + hasChocolate + "\n"
-                + "Thank you!"
-        );
+                + "Thank you!";
+
     }
 
     private int calculatePrice(boolean hasWhippedCream, boolean chocolate) {
@@ -61,11 +62,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void increment(View view) {
+        if(numberOfCoffes == 50) {
+            Toast.makeText(this, "You cannot have more than 50 coffees", Toast.LENGTH_SHORT).show();
+            return;
+        }
         numberOfCoffes++;
         display(numberOfCoffes);
     }
 
     public void decrement(View view) {
+        if (numberOfCoffes == 1) {
+            Toast.makeText(this, "You cannot have less than 1 coffee", Toast.LENGTH_SHORT).show();
+            return;
+        }
         numberOfCoffes--;
         display(numberOfCoffes);
     }
