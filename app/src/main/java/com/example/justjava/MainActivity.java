@@ -2,6 +2,8 @@ package com.example.justjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,17 +38,26 @@ public class MainActivity extends AppCompatActivity {
         int totalPrice = calculatePrice(hasWhippedCream, hasChocolate);
 
         String orderMessage = orderSumary(name, totalPrice, hasWhippedCream, hasChocolate);
+
+        //ao incluir essa parte, a ideia é e apagar os codigos desnecessarios
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
         displaySumary(orderMessage);
     }
 
     public String orderSumary(String name, int totalPrice, boolean hasWhippedCream, boolean hasChocolate) {
-                return "Name: " + name + "\n"
+        return "Name: " + name + "\n"
                 + "Quantity: " + numberOfCoffes + "\n"
                 + "Total: $" + totalPrice + "\n"
                 + "Has whipped cream: " + hasWhippedCream + "\n"
                 + "Has chocolate: " + hasChocolate + "\n"
-                + "Thank you!";
-
+                + getString(R.string.thank_you);
     }
 
     private int calculatePrice(boolean hasWhippedCream, boolean chocolate) {
@@ -62,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void increment(View view) {
-        if(numberOfCoffes == 50) {
+        if (numberOfCoffes == 50) {
             Toast.makeText(this, "You cannot have more than 50 coffees", Toast.LENGTH_SHORT).show();
             return;
         }
