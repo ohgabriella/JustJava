@@ -13,8 +13,6 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
     int numberOfCoffes = 0;
-    int price = 4;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submitOrder(View view) {
-        int price = calculatePrice();
-
         EditText text = findViewById(R.id.editPersonName);
         String name = text.getText().toString();
 
@@ -36,22 +32,32 @@ public class MainActivity extends AppCompatActivity {
         CheckBox checkBoxChocolate = (CheckBox) findViewById(R.id.chocolate);
         boolean hasChocolate = checkBoxChocolate.isChecked();
 
-        orderSumary(name, price, hasWhippedCream, hasChocolate);
+        int totalPrice = calculatePrice(hasWhippedCream, hasChocolate);
+
+        orderSumary(name, totalPrice, hasWhippedCream, hasChocolate);
     }
 
-    public void orderSumary(String name, int price, boolean hasWhippedCream, boolean hasChocolate) {
-        displaySumary( ""
+    public void orderSumary(String name, int totalPrice, boolean hasWhippedCream, boolean hasChocolate) {
+        displaySumary(""
                 + "Name: " + name + "\n"
-                + "Quantity: " + numberOfCoffes  + "\n"
-                + "Total: $" + price + "\n"
+                + "Quantity: " + numberOfCoffes + "\n"
+                + "Total: $" + totalPrice + "\n"
                 + "Has whipped cream: " + hasWhippedCream + "\n"
                 + "Has chocolate: " + hasChocolate + "\n"
                 + "Thank you!"
         );
     }
 
-    private int calculatePrice() {
-       return numberOfCoffes * price;
+    private int calculatePrice(boolean hasWhippedCream, boolean chocolate) {
+        int basePrice = 4;
+
+        if (hasWhippedCream) {
+            basePrice = basePrice + 1;
+        }
+        if (chocolate) {
+            basePrice = basePrice + 2;
+        }
+        return basePrice * numberOfCoffes;
     }
 
     public void increment(View view) {
