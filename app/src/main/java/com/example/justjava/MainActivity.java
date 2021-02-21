@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -24,17 +25,24 @@ public class MainActivity extends AppCompatActivity {
     public void submitOrder(View view) {
         int price = calculatePrice();
 
+        EditText text = findViewById(R.id.editPersonName);
+        String name = text.getText().toString();
+
+        Log.v("MainActivity", "Name: " + name);
+
         CheckBox checkBoxCream = (CheckBox) findViewById(R.id.cream);
         boolean hasWhippedCream = checkBoxCream.isChecked();
 
         CheckBox checkBoxChocolate = (CheckBox) findViewById(R.id.chocolate);
         boolean hasChocolate = checkBoxChocolate.isChecked();
 
-        orderSumary(price, hasWhippedCream, hasChocolate);
+        orderSumary(name, price, hasWhippedCream, hasChocolate);
     }
 
-    public void orderSumary(int price, boolean hasWhippedCream, boolean hasChocolate) {
-        displaySumary("Quantity: " + numberOfCoffes  + "\n"
+    public void orderSumary(String name, int price, boolean hasWhippedCream, boolean hasChocolate) {
+        displaySumary( ""
+                + "Name: " + name + "\n"
+                + "Quantity: " + numberOfCoffes  + "\n"
                 + "Total: $" + price + "\n"
                 + "Has whipped cream: " + hasWhippedCream + "\n"
                 + "Has chocolate: " + hasChocolate + "\n"
